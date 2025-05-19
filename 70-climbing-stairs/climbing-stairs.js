@@ -3,24 +3,24 @@
  * @return {number}
  */
 var climbStairs = function(n) {
-    // Handle small cases directly
-    if (n === 1) return 1;
-    if (n === 2) return 2;
+    // Create our "notebook" to remember answers
+    const memo = {};
     
-    // Initialize with the first two known values
-    let oneStepBefore = 2;  // Ways to climb 2 steps
-    let twoStepsBefore = 1; // Ways to climb 1 step
-    let current = 0;
-    
-    // Calculate each step starting from the 3rd step
-    for (let i = 3; i <= n; i++) {
-        // Current ways = ways from one step before + ways from two steps before
-        current = oneStepBefore + twoStepsBefore;
+    // Helper function that uses our notebook
+    function climb(steps) {
+        // Check if we already know the answer
+        if (memo[steps] !== undefined) {
+            return memo[steps];
+        }
         
-        // Move our pointers forward
-        twoStepsBefore = oneStepBefore;
-        oneStepBefore = current;
+        // Base cases
+        if (steps === 1) return 1;
+        if (steps === 2) return 2;
+        
+        // Calculate the answer and write it in our notebook
+        memo[steps] = climb(steps-1) + climb(steps-2);
+        return memo[steps];
     }
     
-    return current;
+    return climb(n);
 };
