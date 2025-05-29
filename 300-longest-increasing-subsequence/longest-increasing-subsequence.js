@@ -3,31 +3,17 @@
  * @return {number}
  */
 var lengthOfLIS = function(nums) {
-    let res = []
+    if (!nums.length) return 0;
 
-    function binarySearch(arr, target) {
-        let left = 0
-        let right = arr.length - 1
-        while(left <= right) {
-            let mid = Math.floor((left+right) / 2)
-            if(arr[mid] === target) {
-                return mid
-            } else if (arr[mid] > target) {
-                right = mid - 1
-            } else {
-                left = mid + 1
+    const dp = new Array(nums.length).fill(1);
+
+    for (let i = 1; i < nums.length; i++) {
+        for (let j = 0; j < i; j++) {
+            if (nums[j] < nums[i]) {
+                dp[i] = Math.max(dp[i], dp[j] + 1);
             }
         }
-        return left
     }
 
-    for(let n of nums) {
-        if(!res.length || res[res.length - 1] < n) {
-            res.push(n)
-        } else {
-            const idx = binarySearch(res, n)
-            res[idx] = n
-        }
-    }
-    return res.length
+    return Math.max(...dp);
 };
