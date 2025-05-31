@@ -14,15 +14,12 @@ var invertTree = function(root) {
     // Base case: if the tree is empty or we reach a leaf
     if (!root) return null;
     
-    // Swap the left and right children
-    const temp = root.left;
-    root.left = root.right;
-    root.right = temp;
+    const temp = root.left
+    root.left = root.right
+    root.right = temp
     
-    // Recursively invert the left and right subtrees
-    invertTree(root.left);
-    invertTree(root.right);
-    
-    // Return the inverted tree
-    return root;
+    invertTree(root.left)
+    invertTree(root.right)
+
+    return root
 };
