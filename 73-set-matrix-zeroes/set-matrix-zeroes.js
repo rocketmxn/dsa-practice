@@ -3,31 +3,36 @@
  * @return {void} Do not return anything, modify matrix in-place instead.
  */
 var setZeroes = function(matrix) {
-    let zeroInFirstCol = false;
-    let rows = matrix.length;
-    let cols = matrix[0].length;
+    const rows = matrix.length;
+    const cols = matrix[0].length;
 
-    // First pass: use matrix itself to mark
-    for (let row = 0; row < rows; row++) {
-        if (matrix[row][0] === 0) zeroInFirstCol = true;
-
-        for (let col = 1; col < cols; col++) {
-            if (matrix[row][col] === 0) {
-                matrix[row][0] = 0;
-                matrix[0][col] = 0;
+    // First pass: mark rows and columns using 'x'
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            if (matrix[i][j] === 0) {
+                // Mark row
+                for (let col = 0; col < cols; col++) {
+                    if (matrix[i][col] !== 0) {
+                        matrix[i][col] = matrix[i][col] === 'x' ? 'x' : 'x';
+                    }
+                }
+                // Mark column
+                for (let row = 0; row < rows; row++) {
+                    if (matrix[row][j] !== 0) {
+                        matrix[row][j] = matrix[row][j] === 'x' ? 'x' : 'x';
+                    }
+                }
             }
         }
     }
 
-    // Second pass: go in reverse so we don't overwrite flags early
-    for (let row = rows - 1; row >= 0; row--) {
-        for (let col = cols - 1; col >= 1; col--) {
-            if (matrix[row][0] === 0 || matrix[0][col] === 0) {
-                matrix[row][col] = 0;
+    // Second pass: set all 'x' to 0
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            if (matrix[i][j] === 'x') {
+                matrix[i][j] = 0;
             }
-        }
-        if (zeroInFirstCol) {
-            matrix[row][0] = 0;
         }
     }
 };
+
