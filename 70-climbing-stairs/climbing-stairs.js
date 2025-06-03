@@ -3,12 +3,24 @@
  * @return {number}
  */
 var climbStairs = function(n) {
-    let secondLast = 1
-    let last = 1
-    for(let i=1; i<n; i++) {
-        const temp = secondLast
-        secondLast = secondLast + last
-        last = temp
+    // Create our "notebook" to remember answers
+    const memo = {};
+    
+    // Helper function that uses our notebook
+    function climb(steps) {
+        // Check if we already know the answer
+        if (memo[steps] !== undefined) {
+            return memo[steps];
+        }
+        
+        // Base cases
+        if (steps === 1) return 1;
+        if (steps === 2) return 2;
+        
+        // Calculate the answer and write it in our notebook
+        memo[steps] = climb(steps-1) + climb(steps-2);
+        return memo[steps];
     }
-    return secondLast
+    
+    return climb(n);
 };
