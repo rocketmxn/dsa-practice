@@ -3,27 +3,28 @@
  * @return {number[][]}
  */
 var threeSum = function(nums) {
-    let res = []
-    nums.sort((a,b)=> a - b)
+  let res = []
+  nums.sort((a, b) => a - b)
+  for(let i=0; i<nums.length; i++) {
+    if(i > 0 && nums[i] === nums[i-1]) continue
+    let j = i+1
+    let k = nums.length - 1
 
-    for(let i=0; i<nums.length; i++) {
-        if(i>0 && nums[i] === nums[i-1]) continue
-        let j = i+1
-        let k = nums.length - 1
-        while(j<k) {
-            let total = nums[i] + nums[j] + nums[k]
-            if(total > 0) {
-                k--
-            } else if(total < 0) {
+    while(j < k) {
+        const total = nums[i] + nums[j] + nums[k]
+        if(total === 0) {
+            res.push([nums[i], nums[j], nums[k]])
+            j++
+            while(nums[j] === nums[j-1] && j < k){
                 j++
-            } else {
-                res.push([nums[i], nums[j], nums[k]])
-                j++
-                while(nums[j] === nums[j-1] && j<k) {
-                    j++
-                }
             }
         }
+        if(total > 0) {
+            k--
+        } else if (total < 0) {
+            j++
+        }
     }
-    return res
+  }
+  return res
 };
