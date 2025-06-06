@@ -4,37 +4,55 @@
  * @return {string}
  */
 var minWindow = function(s, t) {
-   if(s.length < t.length) return ""
-   const charCount = new Map()
-   for(let char of t) {
-    charCount.set(char, (charCount.get(char) || 0) + 1)
-   }
-   let targetCharsRemaining = t.length
-   let minWindow = [0, Number.POSITIVE_INFINITY]
-   let startIndex = 0
+    if (s.length < t.length) return "";
 
-   for(let endIndex = 0; endIndex < s.length; endIndex++) {
-    let currentChar = s[endIndex]
-    if(charCount.has(currentChar) && charCount.get(currentChar) > 0) {
-        targetCharsRemaining--
+    const charCount = new Map();
+    for (let char of t) {
+        charCount.set(char, (charCount.get(char) || 0) + 1);
     }
-    charCount.set(currentChar, (charCount.get(currentChar) || 0) - 1)
-    if(targetCharsRemaining === 0) {
-        while(true) {
-            const charAtStart = s[startIndex]
-            if(charCount.has(charAtStart) && charCount.get(charAtStart) === 0) {
-                break
+
+    let left = 0;
+    let charsNeeded = t.length;
+    let minLength = Infinity;
+    let minStart = 0;
+
+    for (let right = 0; right < s.length; right++) {
+        let rightChar = s[right];
+
+        // If the character is one we need, decrement charsNeeded
+        // The check charCount.get(rightChar) > 0 ensures we only decrement
+        // for required characters, not for surplus ones.
+        if (charCount.get(rightChar) > 0) {
+            charsNeeded--;
+        }
+        // Decrement the character's count in the map.
+        // If it's not a required character, its count will become negative.
+        charCount.set(rightChar, (charCount.get(rightChar) || 0) - 1);
+
+
+        // When charsNeeded is 0, we have a valid window. Now, try to shrink it.
+        while (charsNeeded === 0) {
+            // Update our minimum window if the current one is smaller
+            let currentLength = right - left + 1;
+            if (currentLength < minLength) {
+                minLength = currentLength;
+                minStart = left;
             }
-            charCount.set(charAtStart, (charCount.get(charAtStart) || 0) + 1 )
-            startIndex++
+
+            // Move the left pointer to shrink the window
+            let leftChar = s[left];
+
+            // Increment the count of the character leaving the window
+            charCount.set(leftChar, charCount.get(leftChar) + 1);
+
+            // If the character leaving was a required one (its count is now > 0),
+            // then our window is no longer valid, so increment charsNeeded.
+            if (charCount.get(leftChar) > 0) {
+                charsNeeded++;
+            }
+            left++; // Shrink the window
         }
-        if(endIndex - startIndex < minWindow[1] - minWindow[0]) {
-            minWindow = [startIndex, endIndex]
-        }
-        charCount.set(s[startIndex], (charCount.get(s[startIndex]) || 0) + 1)
-        targetCharsRemaining++
-        startIndex++
     }
-   }
-   return minWindow[1] === Number.POSITIVE_INFINITY ? "" : s.slice(minWindow[0], minWindow[1] + 1)
+
+    return minLength === Infinity ? "" : s.substring(minStart, minStart + minLength);
 };
