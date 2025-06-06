@@ -5,7 +5,7 @@
 var isHappy = function(n) {
     let visited = new Set()
 
-    function getNextNumber(n) {
+    function getNext(n) {
         let output = 0
         while(n > 0) {
             let digit = n % 10
@@ -15,10 +15,11 @@ var isHappy = function(n) {
         return output
     }
 
-    while(!visited.has(n)) {
-        visited.add(n)
-        n = getNextNumber(n)
-        if(n===1) return true
+    let slow = n
+    let fast = getNext(getNext(n))
+    while(fast !== n && slow !== fast) {
+        slow = getNext(slow)
+        fast = getNext(getNext(fast))
     }
-    return false
+    return fast === 1
 };
