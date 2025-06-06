@@ -3,7 +3,6 @@
  * @return {boolean}
  */
 var isHappy = function(n) {
-    let visited = new Set()
 
     function getNext(n) {
         let output = 0
