@@ -10,30 +10,20 @@
  * @param {TreeNode} root
  * @return {number}
  */
-var maxPathSum = function(root) {
-    let maxPath = -Infinity; // Initialize with negative infinity
+var maxPathSum = function (root) {
+    let maxPath = -Infinity
 
     function getMaxGain(node) {
-        if (node === null) {
-            return 0;
-        }
+        if(node === null) return 0
+        const gainOnLeft = Math.max(getMaxGain(node.left), 0)
+        const gainOnRight = Math.max(getMaxGain(node.right), 0)
 
-        // Recursively get the maximum gain from left and right subtrees
-        // If a gain is negative, we don't include it (hence max with 0)
-        const gainOnLeft = Math.max(getMaxGain(node.left), 0);
-        const gainOnRight = Math.max(getMaxGain(node.right), 0);
+        const currentMaxPath = node.val + gainOnLeft + gainOnRight
+        maxPath = Math.max(maxPath, currentMaxPath)
 
-        // Calculate the path sum with the current node as the highest point
-        const currentMaxPath = node.val + gainOnLeft + gainOnRight;
-
-        // Update the overall maximum path sum found so far
-        maxPath = Math.max(maxPath, currentMaxPath);
-
-        // For the recursion up, return the max gain if we extend the path
-        // from the current node upwards (either through left or right child)
-        return node.val + Math.max(gainOnLeft, gainOnRight);
+        return node.val + Math.max(gainOnLeft, gainOnRight)
     }
 
-    getMaxGain(root); // Start the recursion
-    return maxPath;
-};
+    getMaxGain(root)
+    return maxPath
+}
