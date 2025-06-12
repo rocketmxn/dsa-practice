@@ -17,7 +17,7 @@ var cloneGraph = function (node) {
     let visited = new Map()
     visited.set(node, newNode)
     while(queue.length > 0) {
-        let currentN = queue.pop()
+        let currentN = queue.shift()
         for(let neighbor of currentN.neighbors) {
             if(!visited.has(neighbor)){
                 let newNeighbor = new Node(neighbor.val)
