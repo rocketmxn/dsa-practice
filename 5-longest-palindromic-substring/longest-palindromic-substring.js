@@ -10,18 +10,18 @@ var longestPalindrome = function(s) {
             left--
             right++
         }
-        return right - left - 1
+        return s.slice(left+1, right)
     }
-    let start = 0
-    let end = 0
+    let maxStr = s[0]
     for(let i=0; i<s.length; i++) {
         const odd = expandAroundCenter(s, i, i)
         const even = expandAroundCenter(s, i, i+1)
-        const maxLength = Math.max(odd, even)
-        if(maxLength > end - start) {
-            start = i - Math.floor((maxLength - 1) / 2)
-            end = i + Math.floor(maxLength / 2)
+        if(odd.length > maxStr.length) {
+            maxStr = odd
+        }
+        if(even.length > maxStr.length) {
+            maxStr = even
         }
     }
-    return s.substring(start, end+1)
+    return maxStr
 };
