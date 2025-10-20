@@ -11,4 +11,5 @@ var moveZeroes = function(nums) {
             lastNonZero++
         } 
     }
+    return nums
 };
