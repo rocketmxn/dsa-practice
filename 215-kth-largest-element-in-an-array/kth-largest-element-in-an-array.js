@@ -4,12 +4,6 @@
  * @return {number}
  */
 var findKthLargest = function(nums, k) {
-    const minheap = new MinPriorityQueue()
-    for(const num of nums) {
-        minheap.enqueue(num)
-        if(minheap.size() > k) {
-            minheap.dequeue()
-        }
-    }
-    return minheap.front()
+    nums.sort((a,b)=> b - a)
+    return nums[k - 1]
 };
