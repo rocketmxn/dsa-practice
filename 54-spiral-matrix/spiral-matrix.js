@@ -6,38 +6,33 @@ var spiralOrder = function(matrix) {
     if(!matrix || matrix.length === 0) {
         return []
     }
-    let left = 0
-    let right = matrix[0].length - 1
+    const res = []
     let top = 0
     let bottom = matrix.length - 1
-    let direction = 0
-    const result = []
-    while(left <= right && top <= bottom) {
-        if(direction === 0) {
-            for(let i=left; i<=right; i++) {
-                result.push(matrix[top][i])
-            }
-            top++
+    let left = 0
+    let right = matrix[0].length - 1
+
+    while(top <= bottom && left <= right) {
+        for(let c=left; c<=right; c++) {
+            res.push(matrix[top][c])
         }
-        if(direction === 1) {
-            for(let i=top; i<=bottom; i++) {
-                result.push(matrix[i][right])
-            }
-            right--
+        top++
+        for(let r=top; r <= bottom; r++) {
+            res.push(matrix[r][right])
         }
-        if(direction === 2) {
-            for(let i=right; i>=left; i--) {
-                result.push(matrix[bottom][i])
+        right--
+        if(top <= bottom) {
+            for(let c=right; c>=left; c--) {
+                res.push(matrix[bottom][c])
             }
             bottom--
         }
-        if(direction === 3) {
-            for(let i=bottom; i>= top; i--) {
-                result.push(matrix[i][left])
+        if(left <= right) {
+            for(let r=bottom; r>=top; r--) {
+                res.push(matrix[r][left])
             }
             left++
         }
-        direction = (direction+1) % 4
     }
-    return result
+    return res
 };
